@@ -1,0 +1,13 @@
+---
+FREESURFER_HOME: /home/genr/software/freesurfer/6.0.0
+FSL_ROOT_DIR: /gpfs/nvme1/0/genr/software/fsl
+fslVersion: 6.0.7.6
+moduleYear: 2022
+nArrays: 45
+nCoresPerTask: 1
+nTasksPerNode: 192
+nodeSize: 192
+oDir: /gpfs/nvme1/0/genr/data/pyment/data/genr
+shDir: /home/genr/queues/pyment/genr
+slurmDataFile: pyment.pp.genr.data
+tarDir: /projects/0/einf1049/data/abcd/rel4.0/bids/derivatives/freesurfer/6.0.0/tar

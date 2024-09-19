@@ -1,0 +1,47 @@
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=192
+#SBATCH --partition=genoa
+#SBATCH --time=00:30:00
+
+
+config=config.yaml
+
+shDir=$(grep shDir ${config} |awk '{print $2}')
+config=${shDir}/config.yaml
+
+nodeSize=$(grep nodeSize ${config} |awk '{print $2}')
+
+if [ ${SLURM_NTASKS} -ne ${nodeSize} ] ; then
+    echo "You must set ntasks in slurm batch script to equal nodeSize in config file!"
+    exit
+fi
+
+slurmDataFile=$(grep slurmDataFile ${config} |awk '{print $2}')
+submittedDataFile=$(echo $slurmDataFile).completed
+arrayData=$(echo $slurmDataFile |awk -F.data '{print $1}').array.data
+
+#set by SLURM if --array invoked
+A=${SLURM_ARRAY_TASK_ID}
+
+#####
+#add check to make sure "A" is set...
+#####
+
+nTasks=$(grep nTasksPerNode ${config} |awk '{print $2}')
+
+#1 = yes, 0 = no
+checkComplete=0
+
+for j in $(seq 1 ${nTasks}) ; do
+	if [ ${checkComplete} -eq 1 ] ; then
+		isComplete=$(grep -w A${A}_J${j} ${submittedDataFile})
+		if [ -z ${isComplete} ] ; then
+			continue
+		fi
+	fi
+	tarFile=$(grep -w A${A}_J${j} ${arrayData} |awk '{print $2}')
+	${shDir}/preprocess.sh ${tarFile} &
+	grep -w A${A}_J${j} ${arrayData} >> ${submittedDataFile}
+done
+wait

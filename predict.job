@@ -1,0 +1,34 @@
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=192
+#SBATCH --partition=genoa
+#SBATCH --time=02:00:00
+
+echo "setting config file"
+config=config.yaml
+
+shDir=$(grep shDir ${config} |awk '{print $2}')
+config=${shDir}/config.yaml
+
+echo "gathering information from config file"
+moduleYear=`more ${config}|grep moduleYear |awk '{print $2}'`
+fslRootDir=`more ${config}|grep FSL_ROOT_DIR |awk '{print $2}'`
+fslVersion=`more ${config}|grep fslVersion |awk '{print $2}'`
+FREESURFER_HOME=`more ${config}|grep FREESURFER_HOME |awk '{print $2}'`
+
+echo "loading modules"
+module load ${moduleYear}
+module load Python/3.10.4-GCCcore-11.3.0
+
+echo "setting up imaging software"
+export PYTHONPATH=${PYTHONPATH}:/home/genr/software/pyment-public
+
+export FREESURFER_HOME
+source ${FREESURFER_HOME}/SetUpFreeSurfer.sh
+
+FSLDIR=${fslRootDir}/${fslVersion}
+source ${FSLDIR}/etc/fslconf/fsl.sh
+export PATH=${PATH}:${FSLDIR}/bin
+
+echo "running predictions..."
+python3 ${shDir}/predict.py
