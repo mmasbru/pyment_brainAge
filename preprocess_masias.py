@@ -85,8 +85,7 @@ def crop_mri(wd_nii:str, wd_out:str, bounds:Tuple[Tuple[int, int], Tuple[int, in
         - wd_nii: path to mni-registered nii image.
         - wd_out: path to export all cropped images.
         - bounds: bounds for each direction cropping.
-    OUTPUTS: 
-        - wd_out: path to individual exported image"""
+"""
     
     try:
         img = nib.load(wd_nii)
@@ -120,7 +119,7 @@ def main(wd_in: str, wd_log: str, wd_ref: str, wd_out: str, bounds: Tuple[Tuple[
                 wd_nii = mgz2nii(wd_mgz, wd_log)
                 wd_reo = reo2std(wd_nii, wd_log)
                 wd_reg = nii2mni(wd_reo, wd_ref, wd_log)
-                wd_cropped = crop_mri(wd_reg, wd_out, bounds, wd_log)
+                crop_mri(wd_reg, wd_out, bounds, wd_log)
 
             except Exception as e: 
                 with open(wd_log, "a") as log_file: 
