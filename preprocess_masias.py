@@ -115,11 +115,18 @@ def main(wd_in: str, wd_log: str, wd_ref: str, wd_out: str, bounds: Tuple[Tuple[
     for root, dirs, files in os.walk(wd_in):
         file = [file for file in files if 'brainmask.mgz' in file]
         if file:
-            wd_mgz = os.path.join(root, file[0])
-            wd_nii = mgz2nii(wd_mgz, wd_log)
-            wd_reo = reo2std(wd_nii, wd_log)
-            wd_reg = nii2mni(wd_reo, wd_ref, wd_log)
-            wd_cropped = crop_mri(wd_reg, wd_out, bounds, wd_log)
+            try:
+                wd_mgz = os.path.join(root, file[0])
+                wd_nii = mgz2nii(wd_mgz, wd_log)
+                wd_reo = reo2std(wd_nii, wd_log)
+                wd_reg = nii2mni(wd_reo, wd_ref, wd_log)
+                wd_cropped = crop_mri(wd_reg, wd_out, bounds, wd_log)
+
+            except Exception as e: 
+                with open(wd_log, "a") as log_file: 
+                    log_file.write(f"Error in file {file}:\t")
+                    log_file.write(e + "\n")
+                print(f"Error logged for {file}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run T1w preprocessing for BrainAge use.')
