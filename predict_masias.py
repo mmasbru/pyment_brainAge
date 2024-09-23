@@ -6,10 +6,6 @@ from tqdm import tqdm
 import nibabel as nib
 from pyment.models import RegressionSFCN
 
-def load_model(weights: str = 'brain-age-2022'):
-    """Load the pre-trained RegressionSFCN model."""
-    return(RegressionSFCN(weights))
-
 def preprocess_image(wd_in:str): 
     """Preprocess T1w image."""
     img = nib.load(wd_in)
@@ -33,7 +29,7 @@ def main(wd_in:str, wd_age:str):
             - One column named Age."""
     
     ref = pd.read_csv(wd_age) #Import clinical refference file.
-    model = load_model() #Import model.
+    model = RegressionSFCN(weights='brain-age-2022')#Import model.
     predictions = [] #Define predictions.
 
     log_file = os.path.join(wd_in, 'log.txt') #Generate log file.
