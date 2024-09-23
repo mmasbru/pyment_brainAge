@@ -53,7 +53,6 @@ def main(wd_in:str, wd_age:str):
             prediction = predict_age(model, img)
             ae = abs(prediction-age)
 
-
             #Append to pandas.
             predictions.append({
                 'imageid': imageid,
