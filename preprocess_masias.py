@@ -112,6 +112,8 @@ def crop_mri(wd_nii:str, wd_out:str, bounds:Tuple[Tuple[int, int], Tuple[int, in
 def main(wd_in: str, wd_ref: str, wd_out: str, bounds: Tuple[Tuple[int, int], Tuple[int, int], Tuple[int, int]]):
     """Main function to process MRI images."""
     wd_log = os.path.join(wd_out, 'log.txt')
+    with open(wd_log, "a") as log_file: 
+        log_file.write(f"ERRORS:\t")
     
     for root, dirs, files in os.walk(wd_in):
         file = [file for file in files if 'brainmask.mgz' in file]
