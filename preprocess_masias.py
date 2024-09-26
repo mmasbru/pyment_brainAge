@@ -130,11 +130,11 @@ def main(wd_in: str, wd_log: str, wd_ref: str, wd_out: str, bounds: Tuple[Tuple[
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run T1w preprocessing for BrainAge use.')
     parser.add_argument('-i', '--input', help='Input directory containing .mgz files.', required=True)
-    parser.add_argument('-l', '--log', help='Log file path.', required=True)
     parser.add_argument('-r', '--ref', help='Path to MNI reference file.', required=True)
     parser.add_argument('-o', '--output', help='Output directory for processed files.', required=True)
     args = parser.parse_args()
 
     # Define cropping bounds
     bounds = ((6, 173), (2, 214), (0, 160))
-    main(args.input, args.log, args.ref, args.output, bounds)
+    log = os.path.join(args.output, 'log.txt')
+    main(args.input, log, args.ref, args.output, bounds)
