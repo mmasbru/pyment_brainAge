@@ -4,10 +4,10 @@ import subprocess
 import nibabel as nib
 from typing import Tuple
 
-#wd_in = '/home/mireia/Desktop/00_DataProva/'
+wd_in = '/home/mireia/Desktop/01_BrainAge/00_Input/'
 #wd_log = '/home/mireia/Desktop/01_PreprocessedData/log_file.txt'
-#wd_ref = '/home/mireia/fsl/data/standard/MNI152_T1_1mm_brain.nii.gz' 
-#wd_out = '/home/mireia/Desktop/01_PreprocessedData/'
+wd_ref = '/home/mireia/fsl/data/standard/MNI152_T1_1mm_brain.nii.gz' 
+wd_out = '/home/mireia/Desktop/01_BrainAge/02_Preprocessed/'
 
 def mgz2nii(wd_mgz:str, wd_log:str) -> str: 
     """mgz to nii converter using mri_convert.
@@ -109,8 +109,10 @@ def crop_mri(wd_nii:str, wd_out:str, bounds:Tuple[Tuple[int, int], Tuple[int, in
     
     return(wd_out)
 
-def main(wd_in: str, wd_log: str, wd_ref: str, wd_out: str, bounds: Tuple[Tuple[int, int], Tuple[int, int], Tuple[int, int]]):
+def main(wd_in: str, wd_ref: str, wd_out: str, bounds: Tuple[Tuple[int, int], Tuple[int, int], Tuple[int, int]]):
     """Main function to process MRI images."""
+    wd_log = os.path.join(wd_out, 'log.txt')
+    
     for root, dirs, files in os.walk(wd_in):
         file = [file for file in files if 'brainmask.mgz' in file]
         if file:
@@ -136,5 +138,4 @@ if __name__ == "__main__":
 
     # Define cropping bounds
     bounds = ((6, 173), (2, 214), (0, 160))
-    log = os.path.join(args.output, 'log.txt')
-    main(args.input, log, args.ref, args.output, bounds)
+    main(args.input, args.ref, args.output, bounds)
