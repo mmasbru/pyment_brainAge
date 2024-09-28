@@ -19,7 +19,7 @@ def predict_age(model, img):
     prediction = model.predict(img, verbose=0)[0]
     return(model.postprocess(prediction))
 
-def main(wd_in:str, wd_age:str):
+def main(wd_in:str, wd_age:str=None):
     """Given preprocessed T1w image, predict the age.
     INPUTS: 
         - wd_in: folder path with preprocessed T1w.
@@ -28,7 +28,7 @@ def main(wd_in:str, wd_age:str):
             - One column named ID. 
             - One column named Age."""
     
-    ref = pd.read_csv(wd_age) #Import clinical refference file.
+    #ref = pd.read_csv(wd_age) #Import clinical refference file.
     model = RegressionSFCN(weights='brain-age-2022')#Import model.
     predictions = [] #Define predictions.
 
@@ -38,8 +38,8 @@ def main(wd_in:str, wd_age:str):
     for imageid in tqdm(os.listdir(wd_in)):
         try:
             #Extract chronologic age from ID.
-            name, _ = os.path.splitext(imageid)
-            age = ref.loc[ref['ID'] == name, 'Age'].values[0]
+            #name, _ = os.path.splitext(imageid)
+            #age = ref.loc[ref['ID'] == name, 'Age'].values[0]
 
             #Import, normalize and reshape preprocessed T1w. 
             wd_img = os.path.join(wd_in, imageid)
@@ -47,15 +47,14 @@ def main(wd_in:str, wd_age:str):
 
             #Predict biological age.
             prediction = predict_age(model, img)
-            ae = abs(prediction-age)
+            #ae = abs(prediction-age)
 
             #Append to pandas.
             predictions.append({
                 'imageid': imageid,
-                'age':age,
                 'prediction': prediction, 
-                'absolute_error': ae
             })
+
         except Exception as e: 
             with open(log_file, "a") as log_file: 
                 log_file.write(f"Error in file {imageid}:\t")
