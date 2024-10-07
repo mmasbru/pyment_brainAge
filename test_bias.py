@@ -15,7 +15,7 @@ def log_test_result(p_value, test_name, alpha, f):
     else:
         f.write(f'Non-reject of the {test_name}, with p-val {str(np.round(p_value, 2))} \n')
 
-def main(df, wd, alpha=0.05, stds=2):
+def main(df, wd, alpha, stds):
     """Checks for the adjustment of HCs to the expected age 1:1 line with 0 intercept.
     INPUTS: 
         - df: Dataframe path. Must be a csv file, with at least two columns, named 'Age' with biological age, and 
@@ -79,8 +79,7 @@ def main(df, wd, alpha=0.05, stds=2):
         f.write(f'Fine-tuning not required. Check results.png to ensure. \n')        
     else: 
         f.write(f'Fine-tuning required. \n')
-        
-    
+
     f.close()
 
 if __name__ == "__main__":
@@ -95,14 +94,3 @@ if __name__ == "__main__":
 
     # Define cropping bounds
     main(args.df, args.o, args.a, args.s)
-
-
-
-    
-
-
-#0) IMPORT DATA.
-#df = '/home/mireia/Desktop/01_BrainAge/demographics.csv' 
-#df = df[df['Class']=='C']
-#wd = '/home/mireia/Desktop/01_BrainAge'
-#df = pd.read_csv(df, header=0)
