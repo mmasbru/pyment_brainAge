@@ -8,6 +8,11 @@ import matplotlib.pyplot as plt
 import statsmodels.api as sm
 from statsmodels.stats.diagnostic import het_breuschpagan
 
+#SUGGESTED CODE IMPROVEMENT.
+# Bias in model predictions may not only be influenced by the scanner/center but could also result from discrepancies 
+# between the data representation in the training set and the demographic or geographic area of interest 
+# (e.g., ethnicity, sex/gender, etc.). 
+# Additional potential sources of bias should be explored and incorporated into this code.
 
 def log_test_result(p_value, test_name, alpha, f):
     if p_value > alpha:
