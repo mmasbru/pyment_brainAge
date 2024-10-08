@@ -47,13 +47,13 @@ f.close()
 
 #Parameters
 unfreezed = 5
-bs = 2
-min_age = 3
+bs = 15
+min_age = 0
 max_age = 95
-test_size = int(np.floor(len(imgs)*0.20))
+test_size = int(np.round(len(imgs)*0.25))
 
 
-for imageid in range(test_size, len(imgs)-test_size): #We must leave at least one element out for validation.
+for imageid in range(test_size, len(imgs)-test_size,2): #We must leave at least one element out for validation.
     f = open(log, 'a')
 
     #Select cases to split.
@@ -85,7 +85,7 @@ for imageid in range(test_size, len(imgs)-test_size): #We must leave at least on
         print('No layers freezed in the process. Be careful with overfitting!')
 
 
-    model.compile(optimizer=keras.optimizers.Adam(learning_rate=1e-5), loss='mean_absolute_error')
+    model.compile(optimizer=keras.optimizers.Adam(learning_rate=1e-3), loss='mean_absolute_error')
     history = model.fit(train_dataset, validation_data = val_dataset, epochs=5, batch_size=bs)
     
     # Access MAE for both training and validation
