@@ -4,11 +4,6 @@ import subprocess
 import nibabel as nib
 from typing import Tuple
 
-wd_in = '/home/mireia/Desktop/01_BrainAge/00_Input/'
-#wd_log = '/home/mireia/Desktop/01_PreprocessedData/log_file.txt'
-wd_ref = '/home/mireia/fsl/data/standard/MNI152_T1_1mm_brain.nii.gz' 
-wd_out = '/home/mireia/Desktop/01_BrainAge/02_Preprocessed/'
-
 def mgz2nii(wd_mgz:str, wd_log:str) -> str: 
     """mgz to nii converter using mri_convert.
     INPUTS: 
